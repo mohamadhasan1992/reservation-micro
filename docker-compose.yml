@@ -1,0 +1,40 @@
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: ./apps/auth/Dockerfile
+      target: development
+    command: npm run start:dev auth
+    env_file:
+      - ./apps/auth/.env
+    networks:
+      - mongo-net
+    ports:
+      - "4000:4000"
+    volumes: 
+      - .:/usr/src/app
+  reservation:
+    build:
+      context: .
+      dockerfile: ./apps/reservation/Dockerfile
+      target: development
+    command: npm run start:dev reservation
+    env_file:
+      - ./apps/reservation/.env
+    networks:
+      - mongo-net
+    ports: 
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - mongo-net
+    volumes:
+      - './data:/data/db'
+networks:
+  mongo-net:
+
